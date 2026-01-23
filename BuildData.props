@@ -3,8 +3,8 @@
     <!-- 
     IMPORTANT: Don't make use of special (ie: spaces / : ; , \ < > ?) (periods "." are good) and non-english characters in the ModName.
      -->    
-    <ModName>BaseMod</ModName>
-    <RepositoryURL></RepositoryURL>
+    <ModName>ExamplesMod</ModName>
+    <RepositoryURL>https://github.com/FakeFishGames/ExamplesBaroPlugin</RepositoryURL>
 
     <!-- 
     Enables the use of Publicized assemblies in place of the standard Barotrauma assemblies, allowing access to members that were 

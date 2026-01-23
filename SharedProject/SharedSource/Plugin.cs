@@ -2,7 +2,7 @@
 using Barotrauma.Plugins;
 using Microsoft.Xna.Framework;
 
-namespace ExampleMod;
+namespace Examples;
 
 public partial class Plugin : IBarotraumaPlugin
 {
