@@ -8,10 +8,13 @@ public partial class Plugin : IBarotraumaPlugin
 {
     public static readonly IDebugConsole DebugConsole = PluginServiceProvider.GetService<IDebugConsole>();
     public static readonly ISettingsService SettingsService = PluginServiceProvider.GetService<ISettingsService>();
+    public static readonly IItemComponentRegistrar ItemComponentRegistrar = PluginServiceProvider.GetService<IItemComponentRegistrar>();
 
     public void Init()
     {
         DebugConsole.NewMessage("Plugin loaded", Color.Lime);
+
+        ItemComponentRegistrar.RegisterAllItemComponents();
 
         InitProjectSpecific();
     }
