@@ -7,6 +7,7 @@ namespace Examples;
 public partial class Plugin : IBarotraumaPlugin
 {
     public static readonly IDebugConsole DebugConsole = PluginServiceProvider.GetService<IDebugConsole>();
+    public static readonly ISettingsService SettingsService = PluginServiceProvider.GetService<ISettingsService>();
 
     public void Init()
     {
