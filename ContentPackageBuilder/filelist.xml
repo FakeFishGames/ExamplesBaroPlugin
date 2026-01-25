@@ -2,4 +2,5 @@
 <ContentPackage name="%ModName%">
   <PluginInfo file="%ModDir%/PluginInfo.xml" />
   <Item file="%ModDir%/Content/ExampleItem.xml" />
+  <Example file="%ModDir%/Content/ExamplePrefab.xml" />
 </ContentPackage>

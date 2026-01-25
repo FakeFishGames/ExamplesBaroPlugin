@@ -12,6 +12,8 @@ public partial class Plugin : IBarotraumaPlugin
     public static readonly IItemComponentRegistrar ItemComponentRegistrar = PluginServiceProvider.GetService<IItemComponentRegistrar>();
     public static readonly ISimpleHookService HookService = PluginServiceProvider.GetService<ISimpleHookService>();
     public static readonly IHarmonyProvider HarmonyProvider = PluginServiceProvider.GetService<IHarmonyProvider>();
+    public static readonly IContentFileRegistrar ContentFileRegistrar = PluginServiceProvider.GetService<IContentFileRegistrar>();
+    public static readonly IGameNetwork GameNetwork = PluginServiceProvider.GetService<IGameNetwork>();
 
     public void Init()
     {
@@ -19,17 +21,20 @@ public partial class Plugin : IBarotraumaPlugin
 
         InitProjectSpecific();
 
-        ItemComponentRegistrar.RegisterAllItemComponents();
+        ContentFileRegistrar.RegisterContentFile<ExampleFile>();
+        ItemComponentRegistrar.RegisterItemComponent<ExampleItemComponent>();
+
         HarmonyProvider.PatchAll();
 
-        HookExamples.RegisterHooks();
+        HookExamples.Register();
+        ExampleCustomSetting.CreateSettings();
+        ExampleNetworking.Register();
     }
-
 
     public partial void InitProjectSpecific();
 
     public void Dispose() 
-    { 
+    {
         DebugConsole.NewMessage("Plugin example unloaded", Color.Red); 
     }
 

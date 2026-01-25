@@ -1,0 +1,5 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Examples>
+  <Example identifier="exampleprefab1" someproperty="123" />
+  <Example identifier="exampleprefab2" someproperty="54" />
+</Examples>
