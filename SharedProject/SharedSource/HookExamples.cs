@@ -6,7 +6,7 @@ namespace Examples;
 
 public static class HookExamples
 {
-    public static void RegisterHooks()
+    public static void Register()
     {
         Plugin.HookService.RegisterHook<PluginRoundStartedDelegate>(OnRoundStarted);
         Plugin.HookService.RegisterHook<PluginRoundEndedDelegate>(OnRoundEnded);

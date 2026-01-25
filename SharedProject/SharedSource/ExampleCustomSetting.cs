@@ -1,4 +1,4 @@
-using Barotrauma;
+﻿using Barotrauma;
 using Barotrauma.Plugins;
 using Microsoft.Xna.Framework;
 using System.Reflection;
@@ -6,35 +6,68 @@ using System.Xml.Linq;
 
 namespace Examples;
 
-public class MyCustomSetting(Identifier identifier, byte defaultValue) : BaseSetting<byte>(identifier, defaultValue)
+public class MyCustomSetting(Identifier identifier, string defaultValue) : BaseSetting<string>(identifier, defaultValue)
 {
     public override void Load(XElement element)
     {
-        throw new NotImplementedException();
+        Value = element.GetAttributeString("value", DefaultValue);
     }
 
     public override void Save(XElement element)
     {
-        throw new NotImplementedException();
+        element.SetAttribute("value", Value);
     }
 
 #if CLIENT
     public override void CreateUI()
     {
         MainUI = new GUIFrame(new RectTransform((1.0f, 0.10f), null), style: null);
-        var label = new GUITextBlock(new RectTransform((0.28f, 1.0f), MainUI.RectTransform), "Test setting", wrap: false, textAlignment: Alignment.Center);
 
-        new GUIImage(new RectTransform(new Point(256, 256), MainUI.RectTransform), ItemPrefab.Prefabs["screwdriver"].InventoryIcon);
+        var horizontal = new GUILayoutGroup(new RectTransform(Vector2.One, MainUI.RectTransform), isHorizontal: true);
+        var vertical = new GUILayoutGroup(new RectTransform((0.5f, 1f), horizontal.RectTransform), isHorizontal: false);
+
+        var label = new GUITextBlock(new RectTransform((1f, 0.5f), vertical.RectTransform), "Test setting", wrap: false, textAlignment: Alignment.Center);
+
+        var textBox = new GUITextBox(new RectTransform((1f, 0.5f), vertical.RectTransform), Value);
+
+        textBox.OnAddedToGUIUpdateList = _ =>
+        {
+            textBox.Text = Value;
+            textBox.Enabled = CanClientEdit;
+        };
+
+        textBox.OnTextChanged += (GUITextBox textBox, string text) =>
+        {
+            Set(text);
+            return true;
+        };
+
+        var image = new GUIImage(new RectTransform(new Point(256, 256), horizontal.RectTransform), ItemPrefab.Prefabs["screwdriver"].InventoryIcon);
+
+        image.OnAddedToGUIUpdateList = (GUIComponent comp) =>
+        {
+            if (ItemPrefab.Prefabs.TryGet(Value, out ItemPrefab? result))
+            {
+                image.Sprite = result!.InventoryIcon;
+            }
+        };
     }
 #endif
 }
 
-public class SettingTestMod : IBarotraumaPlugin
+public class ExampleCustomSetting
 {
-    public void Init()
+    public static void CreateSettings()
     {
-        var settingsService = Plugin.SettingsService;
-        var debugConsole = Plugin.DebugConsole;
+        ISettingsService settingsService = Plugin.SettingsService;
+        IDebugConsole debugConsole = Plugin.DebugConsole;
+
+        settingsService.RegisterSetting(new BooleanSetting($"enableredtext".ToIdentifier(), false, label: $"Enable red text")
+        {
+            ShowInUI = true,
+            ToolTip = "Makes all text in game red",
+            SyncMode = SettingSyncMode.ClientPermissiveDesync
+        });
 
         settingsService.RegisterSetting(new FloatSetting($"foobar".ToIdentifier(), 5.0f, label: $"Foobar")
         {
@@ -82,7 +115,7 @@ public class SettingTestMod : IBarotraumaPlugin
             SyncMode = SettingSyncMode.NoSync
         });
 
-        settingsService.RegisterSetting(new MyCustomSetting($"customsetting".ToIdentifier(), 7)
+        settingsService.RegisterSetting(new MyCustomSetting($"customsetting".ToIdentifier(), "screwdriver")
         {
             ShowInUI = true,
             SyncMode = SettingSyncMode.NoSync
@@ -121,15 +154,5 @@ public class SettingTestMod : IBarotraumaPlugin
 
                 settingsService?.RetrieveSetting<BooleanSetting>("foobool".ToIdentifier())?.Set(value);
             });
-    }
-
-    public void Dispose()
-    {
-
-    }
-
-    public void OnContentLoaded()
-    {
-
     }
 }
