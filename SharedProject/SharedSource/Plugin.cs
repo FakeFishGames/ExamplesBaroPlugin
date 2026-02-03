@@ -29,17 +29,32 @@ public partial class Plugin : IBarotraumaPlugin
         HookExamples.Register();
         ExampleCustomSetting.CreateSettings();
         ExampleNetworking.Register();
+
+        DebugConsole.RegisterCommand("forceunloadfail", "forceunloadfail: Starts a thread that is never cleaned up that causes the examples plugin to never unload.", 
+            CommandFlags.DoNotRelayToServer, (string[] args) =>
+        {
+            Thread thread = new Thread(() =>
+            {
+                while (true)
+                {
+                    Thread.Sleep(1);
+                }
+            });
+
+            thread.Start();
+
+            DebugConsole.NewMessage("OK", Color.Aqua);
+        });
     }
 
     public partial void InitProjectSpecific();
 
-    public void Dispose() 
-    {
-        DebugConsole.NewMessage("Plugin example unloaded", Color.Red); 
-    }
-
     public void OnContentLoaded()
     {
         
+    }
+    public void Dispose()
+    {
+        DebugConsole.NewMessage("Plugin example unloaded", Color.Red);
     }
 }
