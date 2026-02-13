@@ -5,6 +5,7 @@ using Microsoft.Xna.Framework;
 
 namespace Examples;
 
+
 public partial class Plugin : IBarotraumaPlugin
 {
     public static readonly IDebugConsole DebugConsole = PluginServiceProvider.GetService<IDebugConsole>();
@@ -14,6 +15,7 @@ public partial class Plugin : IBarotraumaPlugin
     public static readonly IHarmonyProvider HarmonyProvider = PluginServiceProvider.GetService<IHarmonyProvider>();
     public static readonly IContentFileRegistrar ContentFileRegistrar = PluginServiceProvider.GetService<IContentFileRegistrar>();
     public static readonly IGameNetwork GameNetwork = PluginServiceProvider.GetService<IGameNetwork>();
+    public static readonly IStatusEffectService StatusEffectService = PluginServiceProvider.GetService<IStatusEffectService>();
 
     public void Init()
     {
@@ -29,14 +31,21 @@ public partial class Plugin : IBarotraumaPlugin
         HookExamples.Register();
         ExampleCustomSetting.CreateSettings();
         ExampleNetworking.Register();
+        ExampleStatusEffectAction.Register();
 
         DebugConsole.RegisterCommand("forceunloadfail", "forceunloadfail: Starts a thread that is never cleaned up that causes the examples plugin to never unload.", 
             CommandFlags.DoNotRelayToServer, (string[] args) =>
         {
             Thread thread = new Thread(() =>
             {
+                double startTime = Timing.TotalTime;
                 while (true)
                 {
+                    if (Timing.TotalTime > startTime + 60f)
+                    {
+                        break;
+                    }
+
                     Thread.Sleep(1);
                 }
             });
@@ -53,6 +62,7 @@ public partial class Plugin : IBarotraumaPlugin
     {
         
     }
+
     public void Dispose()
     {
         DebugConsole.NewMessage("Plugin example unloaded", Color.Red);

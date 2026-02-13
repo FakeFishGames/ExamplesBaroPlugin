@@ -1,0 +1,36 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Items>
+  <Item name="Example Item" identifier="exampleitem">
+    <Sprite texture="Content/Items/OxygenGenerator/oxygengenerator.png" depth="0.3" sourcerect="848,16,143,143"/>
+    <Body width="100" height="100" density="20" />
+    <ExampleItemComponent SpinForce="10100.0" />
+  </Item>
+
+  <Item name="Bikehorn Announcer" identifier="bikehornannouncer" category="Misc" tags="smallitem,hornitem,clowns,provocativetohumanai" scale="0.5" cargocontaineridentifier="metalcrate" description="HONK">
+    <PreferredContainer primary="crewcab" spawnprobability="0.05" notcampaign="true"/>
+    <PreferredContainer secondary="wreckcrewcab,abandonedcrewcab,piratecrewcab" spawnprobability="0.05"/>
+    <Price baseprice="5" canbespecial="false">
+      <Price storeidentifier="merchantoutpost" minavailable="1"/>
+      <Price storeidentifier="merchantcity" minavailable="1"/>
+      <Price storeidentifier="merchantresearch" sold="false" />
+      <Price storeidentifier="merchantmilitary" sold="false" />
+      <Price storeidentifier="merchantmine" sold="false" />
+      <Price storeidentifier="merchantclown" minavailable="3" maxavailable="5">
+        <Reputation faction="clowns" min="30"/>
+      </Price>
+    </Price>
+    <InventoryIcon texture="Content/Items/InventoryIconAtlas.png" sourcerect="769,385,64,64" depth="0.55" origin="0.5,0.5" />
+    <Sprite texture="Content/Items/Misc/Misc.png" sourcerect="101,45,53,22" depth="0.55" />
+    <Body width="50" height="20" density="20" />
+    <Holdable slots="Any,RightHand,LeftHand" aimpos="100,0" handle1="-15,-3" msg="ItemMsgPickUpSelect" />
+    <RangedWeapon reload="2">
+      <Sound file="Content/Items/Weapons/honk.ogg" type="OnUse" range="1000" />
+      <StatusEffect type="OnUse" target="Character">
+        <Broadcast message="HONK!!!" />
+      </StatusEffect>
+    </RangedWeapon>
+    <aitarget soundrange="1000" fadeouttime="5" />
+    <Upgrade gameversion="0.10.0.0" scale="0.5" />
+  </Item>
+
+</Items>
