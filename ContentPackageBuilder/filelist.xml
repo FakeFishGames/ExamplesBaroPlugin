@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="UTF-8" ?>
 <ContentPackage name="%ModName%">
   <PluginInfo file="%ModDir%/PluginInfo.xml" />
-  <Item file="%ModDir%/Content/ExampleItem.xml" />
+  <Item file="%ModDir%/Content/ExampleItems.xml" />
   <Example file="%ModDir%/Content/ExamplePrefab.xml" />
 </ContentPackage>
