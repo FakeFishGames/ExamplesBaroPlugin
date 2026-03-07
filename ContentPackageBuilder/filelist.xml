@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="UTF-8" ?>
-<ContentPackage name="%ModName%">
+<ContentPackage name="%ModName%" steamworkshopid="3649950736" modversion="1.0.5">
   <PluginInfo file="%ModDir%/PluginInfo.xml" />
   <Item file="%ModDir%/Content/ExampleItems.xml" />
   <Example file="%ModDir%/Content/ExamplePrefab.xml" />
