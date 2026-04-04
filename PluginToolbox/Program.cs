@@ -50,18 +50,31 @@ internal static class Program
             ($@"{ProjectRoot}\ServerProject\MacServer.csproj", Runtime.Mac)
         ];
 
+        bool buildFailed = false;
+
         foreach (var project in projects)
         {
-            Console.WriteLine($"Building {project.ProjectPath}");
-            DotnetCmd.CompileProject(project.ProjectPath, Configuration.Release, project.Runtime);
+            Logger.Log($"Building {project.ProjectPath}");
+            if (!DotnetCmd.CompileProject(project.ProjectPath, Configuration.Release, project.Runtime))
+            {
+                buildFailed = true;
+                break;
+            }
         }
 
-        Console.WriteLine("Finished building!");
+        if (buildFailed)
+        {
+            Logger.LogError("One of the projects failed to build, exiting...");
+        }
+        else
+        {
+            Logger.Log("Finished building!");
+        }
     }
 
     private static string? AskForInput(string prompt)
     {
-        Console.Write($"{prompt}: ");
+        Logger.Log($"{prompt}: ");
         return Console.ReadLine();
     }
 }

@@ -7,7 +7,7 @@ internal static class DotnetCmd
 {
     private const string DesiredRuntimeVersion = "8.0.0";
 
-    public static void CompileProject(string projectPath, Configuration configuration, Runtime runtime)
+    public static bool CompileProject(string projectPath, Configuration configuration, Runtime runtime)
     {
         ProcessStartInfo psi = new ProcessStartInfo
         {
@@ -29,12 +29,48 @@ internal static class DotnetCmd
         };
 
         var process = Process.Start(psi) ?? throw new Exception("Failed to start dotnet process");
+
+        bool errorOccurred = false;
+
+        process.BeginOutputReadLine();
+        process.BeginErrorReadLine();
+
+        process.OutputDataReceived += (_, e) =>
+        {
+            if (e.Data != null)
+            {
+                if (e.Data.Contains("error"))
+                {
+                    errorOccurred = true;
+                    Logger.LogError(e.Data);
+                }
+                else
+                {
+                    Logger.Log(e.Data);
+                }
+            }
+        };
+
+        process.ErrorDataReceived += (_, e) =>
+        {
+            if (e.Data != null)
+            {
+                Logger.LogError(e.Data);
+                errorOccurred = true;
+            }
+        };
+
         process.WaitForExit();
 
-        string stdout = process.StandardOutput.ReadToEnd();
-        string stderr = process.StandardError.ReadToEnd();
+        if (errorOccurred)
+        {
+            Logger.LogError($"Failed to build {projectPath}");
+        }
+        else
+        {
+            Logger.Log($"Successfully built {projectPath}");
+        }
 
-        Console.WriteLine(stdout);
-        Console.WriteLine(stderr);
+        return !errorOccurred;
     }
 }
