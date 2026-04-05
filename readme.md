@@ -92,25 +92,31 @@ If you add new XML content, make sure to update the file list located at:
 
 ## Testing Your Mod
 
-You can test your mod by right-clicking the **ClientProject** and **ServerProject**, then selecting **Build**.
+<img width="1920" height="1032" alt="image" src="https://github.com/user-attachments/assets/56ba8402-7f1e-4f36-a28b-bca48c785c17" />
 
-This will automatically generate the mod in the `LocalMods` folder you configured earlier. You can then enable the mod in-game.
+You can test your mod by pressing the "Launch Barotrauma" button on top, which will automatically launch Barotrauma with the debugger attached and your plugin built. 
+
+Building the plugin also automatically generates the mod in the `LocalMods` folder you configured earlier. You can then enable the mod in-game.
+
+You can also manually right-click **WindowsClient** and **WindowsServer** in the solution view, then select **Build**, which does the same process as the above, without the launching Barotrauma part.
 
 > **Warning**  
-> This method builds the mod in **Debug** configuration and only for the current platform.  
+> This method builds the mod in **Debug** configuration.  
 > To properly publish or update your mod, follow the steps below.
 
 ## Building for Release
 
-1. Select **PluginToolbox** as the startup project.
-2. Run the project.
-3. When the terminal prompt appears, type `build`
+Change the launch option from **Launch Barotrauma** to **Build Release**:
+
+<img width="1920" height="1032" alt="image" src="https://github.com/user-attachments/assets/94c8e5f1-2438-4d81-97c7-2c4ca7fc1d39" />
+
+Now simply click **Build Release** and it should start building your plugin in release mode.
 
 ## Hot Reload
 
 .NET supports Hot Reload, which lets you apply certain code changes while Barotrauma is running, without rebuilding the mod or restarting the game. This is useful for quickly iterating on gameplay logic.
 
-To use Hot Reload in Visual Studio, start Barotrauma normally with your mod enabled. Open the plugin solution in Visual Studio, then attach the debugger to the running `Barotrauma.exe` process using **Debug → Attach to Process**.
+To use Hot Reload in Visual Studio, launch Barotrauma with your plugin enabled. If your IDE is not attached to the Barotrauma process, you can attach the debugger to the running `Barotrauma.exe` process using **Debug → Attach to Process**.
 
 Once attached, make changes to your C# code and apply them using **Hot Reload** (toolbar button) or **Alt + F10**. If the change is supported, it will be applied immediately and you can test it in-game.
 
