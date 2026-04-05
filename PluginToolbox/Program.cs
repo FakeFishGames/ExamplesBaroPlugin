@@ -18,7 +18,7 @@ internal static class Program
             {
                 case "--build":
                     Build();
-                    break;
+                    return;
             }
         }
 
