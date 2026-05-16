@@ -1,4 +1,5 @@
 ﻿using Barotrauma;
+using Barotrauma.Networking;
 using Barotrauma.Plugins;
 using Microsoft.Xna.Framework;
 using System.Reflection;
@@ -77,7 +78,7 @@ public class ExampleCustomSetting
             StepValue = 1f,
             Range = (0f, 100f),
             SyncMode = SettingSyncMode.ServerAuthority,
-            IsAllowedToSet = c => c.Permissions.HasFlag(Barotrauma.Networking.ClientPermissions.ManageRound)
+            IsAllowedToSet = (ISetting setting, Client? c) => c?.Permissions.HasFlag(ClientPermissions.ManageRound) ?? true
         });
 
         settingsService.RegisterSetting(new FloatSetting($"fooslider".ToIdentifier(), 5.0f, label: $"Fooslider")
@@ -89,7 +90,7 @@ public class ExampleCustomSetting
             StepValue = 1f,
             Range = (0f, 100f),
             SyncMode = SettingSyncMode.ServerAuthority,
-            IsAllowedToSet = c => c.Permissions.HasFlag(Barotrauma.Networking.ClientPermissions.ManageRound)
+            IsAllowedToSet = (ISetting setting, Client? c) => c?.Permissions.HasFlag(ClientPermissions.ManageRound) ?? true
         });
 
         settingsService.RegisterSetting(new BooleanSetting($"foobool".ToIdentifier(), true, label: $"Foobool active")
